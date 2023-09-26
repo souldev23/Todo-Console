@@ -39,8 +39,10 @@ const main = async() => {
             case 6:
                 const id = await listTasksToDelete( tasks.listOfTask);
                 const confirm = await getConfirm('Are you sure?');
-                if(confirm)
+                if(confirm){
                     tasks.deleteTask(id);
+                    console.log('Task deleted successfully');
+                }
         }
 
         saveInfo(JSON.stringify(tasks.listOfTask));
