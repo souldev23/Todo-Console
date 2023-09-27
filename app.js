@@ -2,7 +2,7 @@
 
 require('colors');
 const { saveInfo, readInfo } = require('./helpers/file');
-const { inquireMenu, pause, readInput, listTasksToDelete, getConfirm } = require('./helpers/inquirer');
+const { inquireMenu, pause, readInput, listTasksToDelete, getConfirm, listTasksToComplete } = require('./helpers/inquirer');
 const Task = require('./models/Task');
 const Tasks = require('./models/Tasks');
 
@@ -36,12 +36,18 @@ const main = async() => {
             case 4:
                 console.log(tasks.listFilteredTasks(false));
                 break;
+            case 5:
+                const ids = await listTasksToComplete(tasks.listOfTask);
+                tasks.completeTasks(ids);
+                break;
             case 6:
                 const id = await listTasksToDelete( tasks.listOfTask);
-                const confirm = await getConfirm('Are you sure?');
-                if(confirm){
-                    tasks.deleteTask(id);
-                    console.log('Task deleted successfully');
+                if(id !== '0'){
+                    const confirm = await getConfirm('Are you sure?');
+                    if(confirm){
+                        tasks.deleteTask(id);
+                        console.log('Task deleted successfully');
+                    }
                 }
         }
 

@@ -91,6 +91,10 @@ const listTasksToDelete = async( tasks = []) => {
             name: `${idx} ${task.desc}`
         }
     });
+    choices.unshift({
+        value: '0',
+        name: `${'0.'.green} Cancel.`
+    });
     const questions = [{
         type: 'list',
         name: 'id',
@@ -99,6 +103,30 @@ const listTasksToDelete = async( tasks = []) => {
     }];
     const {id} = await inquirer.prompt(questions);
     return id;
+};
+
+const listTasksToComplete = async( tasks = []) => {
+
+    const choices = tasks.map( (task, i) => {
+        const idx = `${i + 1}.`.green;
+        return {
+            value: task.id,
+            name: `${idx} ${task.desc}`,
+            checked: task.completedOn? true : false
+        }
+    });
+    // choices.unshift({
+    //     value: '0',
+    //     name: `${'0.'.green} Cancel.`
+    // });
+    const questions = [{
+        type: 'checkbox',
+        name: 'ids',
+        message: 'Selections',
+        choices
+    }];
+    const {ids} = await inquirer.prompt(questions);
+    return ids;
 };
 
 const getConfirm = async(message) => {
@@ -116,5 +144,6 @@ module.exports = {
     pause,
     readInput,
     listTasksToDelete,
-    getConfirm
+    getConfirm,
+    listTasksToComplete
 }

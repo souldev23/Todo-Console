@@ -32,6 +32,21 @@ class Tasks {
         this._list[task.id] = task;
     }
 
+    completeTasks( ids = [] ){
+
+        ids.forEach( id => {
+            const task = this._list[id];
+            if(!task.completedOn){
+                task.completedOn = new Date().toISOString();
+            }
+        });
+        this.listOfTask.forEach( task => {
+            if(!ids.includes(task.id)){
+                this._list[task.id].completedOn = null;
+            }
+        });
+    }
+
     listAllTask (){
         let allTask = '';
         let listIdex = 0;
@@ -52,10 +67,10 @@ class Tasks {
             if(filter)
             {
                 if(task.completedOn)
-                FilteredTasks += `${(listIdex + '.').green} ${task.desc}\n`;
+                    FilteredTasks += `${(listIdex + '.').green} ${task.desc} :: ${task.completedOn.green}\n`;
             }else{
                 if(!task.completedOn)
-                FilteredTasks += `${(listIdex + '.').green} ${task.desc}\n`;
+                    FilteredTasks += `${(listIdex + '.').green} ${task.desc.blue}\n`;
             }
 
         });
